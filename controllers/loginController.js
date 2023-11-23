@@ -12,8 +12,11 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
+    if(user.password !== password){
+      return res.status(401).json({ error: 'Invalid credentials' });  
+    }
+    console.log("Login successful!");
     res.status(200).json(user);
-
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });

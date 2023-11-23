@@ -11,7 +11,9 @@ const router = express.Router();
 // router.put('/:id', shopController.updateShopItem);
 
 //cantina
-router.get('/cantina', shopController.getShopItems);
-// router.post('/cantina', shopController.createShopItem);
-
+router.get('/cantina', shopController.getWithShopName('cantina'));
+router.post('/cantina', shopController.createWithShopName('cantina'));
+//halli-mane
+router.get('/halli-mane', shopController.getWithShopName('halli-mane'));
+router.post('/halli-mane', shopController.createWithShopName('halli-mane'));
 module.exports =  router;

@@ -1,16 +1,35 @@
 const ShopItems = require('../models/shopItemsModel');
 const mongoose = require('mongoose');
 
+const createWithShopName = (shopname) => {
+  return (req, res) => {
+    createShopItem(shopname, req, res);
+  };
+};
+const getWithShopName = (shopname) => {
+  return (req, res) => {
+    getShopItems(shopname, req, res);
+  };
+};
 // get all shop items
-const getShopItems = async (req, res) => {
+const getShopItems = async (shopname,req, res) => {
   try {
-  const shopItems = await ShopItems.find({}).sort({ createdAt: -1 });
-  res.status(200).json(shopItems);
+    const shopItems = await ShopItems.find({ shopName: shopname}).sort({
+      createdAt: -1,
+    });
+
+    if (shopItems.length === 0) {
+      // Handle the case where no shop items are found
+      return res.status(404).json({ message: 'No shop items found' });
+    }
+
+    res.status(200).json(shopItems);
   } catch (error) {
-  console.error('Error fetching shop items:', error);
-  res.status(500).json({ error: 'Internal server error' });
-}
-}
+    console.error('Error fetching shop items:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 
 // // get a single Shop
 // const getShopItem = async (req, res) => {
@@ -25,19 +44,33 @@ const getShopItems = async (req, res) => {
   
 // }
 
-// // create a new Shop
-// const createShopItem = async (req, res) => {
-//   const {title, cost, desc} = req.body
+// create a new Shop
+const createShopItem = async (shopName, req, res) => {
+  // const {title, cost, desc} = req.body
 
-//   // add to the database
-//   try {
-//     const newShop = new ShopItems({ title, cost, desc });
-//     await newShop.save();
-//     res.status(200).json(newShop);
-//   } catch (error) {
-//     res.status(400).json({ error: error.message })
-//   }
-// }
+  // // add to the database
+  // try {
+  //   const newShop = new ShopItems({ shopName, title, cost, desc });
+  //   await newShop.save();
+  //   res.status(200).json(newShop);
+  // } catch (error) {
+  //   res.status(400).json({ error: error.message })
+  // }
+  const {title, cost, desc} = req.body
+    try {
+        const existingItem = await ShopItems.findOne({ title });
+    if (existingItem) {
+        existingItem.quantity++;
+        await existingItem.save();
+    }else{
+      const newCartItem = new ShopItems({ shopName, title, cost, desc });
+      await newCartItem.save();
+      res.status(201).json(newCartItem);
+    }
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
 
 // // delete a Shop
 // const deleteShopItem = async (req, res) => {
@@ -76,4 +109,7 @@ const getShopItems = async (req, res) => {
 // };
 module.exports = {
   getShopItems,
+  createShopItem,
+  createWithShopName,
+  getWithShopName
 }
