@@ -15,4 +15,6 @@ const addToCart = async (shopName, req, res) => {
     } catch (error) {
         res.status(500).json({ error: 'An unexpected error occurred while adding the item to the cart.' })
     }
-  }
+  };
+
+export default addToCart;

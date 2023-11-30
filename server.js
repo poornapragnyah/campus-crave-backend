@@ -6,12 +6,9 @@ const cors = require('cors');
 const shopRoutes = require('./routes/shops.js');
 const loginRoutes = require('./routes/login.js')
 const signupRoutes = require('./routes/signup.js');
+ 
 
-
-// express app
 const app = express()
-
-// middleware
 app.use(cors())
 app.use(express.json());
 
@@ -22,7 +19,6 @@ app.use((req, res, next) => {
 
 // routes
 app.use('/api/shops', shopRoutes)
-
 app.use('/api/login',loginRoutes)
 app.use('/api/signup',signupRoutes)
 
