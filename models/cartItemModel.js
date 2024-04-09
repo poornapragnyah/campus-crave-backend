@@ -15,6 +15,10 @@ const cartItemsSchema = new Schema(
     quantity: {
       type: Number,
       default: 1,
+      validate: {
+        validator: (value) => value >= 0,
+        message: "Quantity must be a positive number",
+      },
     },
   },
   { timestamps: true }
