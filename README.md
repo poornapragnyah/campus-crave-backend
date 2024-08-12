@@ -45,7 +45,7 @@ Campus Crave is a web application designed to transform the campus dining experi
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
-## Backend Code
+## Frontend Code
 
 The backend code for this project can be found here: [Frontend Repository](https://github.com/poornapragnyah/campus-crave)
 
